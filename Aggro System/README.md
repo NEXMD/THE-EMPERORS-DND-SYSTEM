@@ -1,109 +1,398 @@
 # Aggro System
 
-**Priority:** 1 on the Ideas & Development Priority List  
-**Status:** Core mechanics established; selected implementation details remain open.  
-**Current project focus:** Weapon Mastery. Aggro System remains separately documented.
+**Version:** 1.0  
+**Status:** Complete baseline  
+**Authority:** The DM's approved rules and rulings  
+**Purpose:** A shared enemy-targeting system that considers player threat, passive presence, support actions, survival, and enemy behaviour.
 
-## Core concept
+This document is the current authoritative written record of the Aggro System. Established rules are recorded as rules. DM-controlled decisions remain DM-controlled. Where the system does not define a special-case procedure, this document says so rather than inventing one.
 
-Every player has an aggro value. Enemies use those values to determine each player's probability of being selected as a target. The player with the highest aggro is more likely to be selected, but is not guaranteed to be selected.
+## System overview
 
-## 1. Aggro calculation
+The system separates a player's starting threat from the aggro they generate during combat.
 
-The approved calculation is:
+| Tier | Name | Function |
+|---:|---|---|
+| 0 | Base Aggro | Universal starting reference: 100 |
+| 1 | Player's Aggro | Individual starting value calculated from CHA and equipment |
+| 2 | Player's Aggro (Stealth) | Conditional reduction while the player remains unseen |
+| 3 | Player's Aggro in Combat | Accumulated aggro from combat actions and encounter-start adjustments |
+| 4 | Aggro Decay | Reduction for turns without attacking or healing, and while unconscious |
+| 5 | End of Combat | Reset to the player's normal Player's Aggro |
 
-`Aggro = 100 - 2 × (CHA - 10) + S + D + H`
+All enemies in an encounter use one shared aggro pool. The system does not maintain a separate aggro table for every enemy.
 
-Where:
+---
 
-| Symbol | Meaning |
+# Part I — Player Aggro Tiers
+
+## Tier 0 — Base Aggro
+
+Every player begins with **100 Base Aggro** before any calculations.
+
+\[
+A_{\text{Base}}=100
+\]
+
+Base Aggro is the common reference point for all characters.
+
+## Tier 1 — Player's Aggro
+
+Player's Aggro is the character's individual starting aggro value. It is calculated again whenever the character enters combat.
+
+### Charisma calculation
+
+Use the character's actual Charisma ability score, not the CHA modifier.
+
+\[
+A_{\text{CHA}}=100-2(\text{Modified CHA}-10)
+\]
+
+- CHA 10 is neutral and produces 100 before item modifiers.
+- Each CHA point above 10 reduces aggro by 2.
+- Each CHA point below 10 increases aggro by 2.
+
+| CHA score | CHA-adjusted aggro |
+|---:|---:|
+| 1 | 118 |
+| 2 | 116 |
+| 3 | 114 |
+| 4 | 112 |
+| 5 | 110 |
+| 6 | 108 |
+| 7 | 106 |
+| 8 | 104 |
+| 9 | 102 |
+| 10 | 100 |
+| 11 | 98 |
+| 12 | 96 |
+| 13 | 94 |
+| 14 | 92 |
+| 15 | 90 |
+| 16 | 88 |
+| 17 | 86 |
+| 18 | 84 |
+| 19 | 82 |
+| 20 | 80 |
+
+### Equipment modifiers
+
+Equipment can affect Player's Aggro by:
+- Increasing the character's CHA score.
+- Directly reducing aggro.
+
+Apply equipment-based CHA changes first. Calculate aggro using the modified CHA score. Apply direct aggro item modifiers afterward.
+
+\[
+A_{\text{Player}}=\max(30,\ A_{\text{CHA}}+\text{Direct Item Modifiers})
+\]
+
+A direct aggro reduction is entered as a negative modifier.
+
+**Example**
+
+A character has CHA 14, an item that increases CHA by 2, and an item that directly reduces aggro by 5.
+
+1. Modified CHA: 14 + 2 = 16.
+2. CHA-adjusted aggro: 100 - 2(16 - 10) = 88.
+3. Direct item reduction: 88 - 5 = **83 Player's Aggro**.
+
+### Minimum and maximum
+
+- Minimum Player's Aggro: **30**.
+- Maximum Player's Aggro: **Unlimited**.
+
+## Tier 2 — Player's Aggro (Stealth)
+
+When a player remains unseen and undetected, their Stealth skill reduces their Player's Aggro.
+
+Calculate the Stealth reduction from the character's **Stealth skill modifier**, not their DEX score.
+
+\[
+A_{\text{Stealth}}=A_{\text{Player}}\times(1-\text{Stealth Reduction})
+\]
+
+| Stealth skill modifier | Aggro reduction | Remaining percentage |
+|---:|---:|---:|
+| +0 to +1 | 0% | 100% |
+| +2 to +3 | 2% | 98% |
+| +4 to +5 | 4% | 96% |
+| +6 to +7 | 6% | 94% |
+| +8 to +9 | 8% | 92% |
+| +10 to +11 | 10% | 90% |
+| +12 to +13 | 12% | 88% |
+| +14 to +15 | 14% | 86% |
+| +16 to +17 | 16% | 84% |
+| +18 to +19 | 18% | 82% |
+| +20 | 20% | 80% |
+
+### Conditions
+
+The Stealth advantage applies only while the player remains unseen and undetected.
+
+The advantage is lost when:
+- The player attacks.
+- The player heals.
+- The player performs a supporting action.
+- An enemy detects or notices the player.
+- The player physically interacts with or touches an enemy in a way that reveals their presence.
+
+CHA and Stealth reductions can stack.
+
+### Losing the Stealth advantage
+
+When Stealth is lost, use **normal Player's Aggro** again. Then add the aggro generated by the action that revealed the player.
+
+**Example:** A character has normal Player's Aggro of 83 and is using Stealth. The character attacks and deals 20 damage. The Stealth reduction is removed; combat aggro is calculated from 83, then the attack adds 20, for a total of **103**.
+
+The Stealth advantage is not retained after the player reveals themselves.
+
+**Calculation note:** The rules specify the percentage reduction but do not establish a decimal-rounding convention for Stealth results.
+
+## Tier 3 — Player's Aggro in Combat
+
+Player's Aggro in Combat is the player's accumulated aggro during the current encounter.
+
+It begins from the applicable starting value and increases through the sources below. Encounter-start adjustments, where applicable, are described in the Enemy Behaviour section.
+
+### Damage-generated aggro
+
+| Character type | Conversion | Formula |
+|---|---:|---|
+| Normal character | 1 damage = 1 aggro | Damage dealt × 1 |
+| Tank | 1 damage = 2 aggro | Damage dealt × 2 |
+
+The Tank multiplier compensates for typically lower damage output and helps Tanks maintain enemy attention.
+
+The 2× multiplier applies to damage-generated aggro. It does not multiply healing aggro or HP-loss aggro.
+
+### Healing-generated aggro
+
+\[
+A_{\text{Healing}}=\text{Effective HP Restored}\times1
+\]
+
+- Each 1 effective HP restored generates 1 aggro.
+- Only effective HP restored generates aggro.
+- Overhealing generates no aggro.
+- Healing-generated aggro belongs to the healer, not the healed player.
+
+### HP-loss aggro
+
+Each separate damage event is calculated individually.
+
+\[
+A_{\text{HP Loss}}=\left\lfloor\frac{\text{HP Lost in that event}}{5}\right\rfloor
+\]
+
+Round down each event's result, then add it to the player's accumulated combat aggro. Do not combine separate damage events into one larger calculation.
+
+**Example**
+
+| Event | Damage received | Calculation | Aggro gained |
+|---|---:|---:|---:|
+| Round 3 | 16 | floor(16 ÷ 5) | +3 |
+| Round 4 | 5 | floor(5 ÷ 5) | +1 |
+
+The two events generate 4 aggro in total.
+
+Intentionally taking damage to generate aggro is allowed under the current design. It is an intentional tactical trade-off because doing so endangers the player.
+
+### Damage over time
+
+Poison damage, burning damage, and other ongoing damage-over-time effects generate **no aggro**.
+
+### Other combat aggro sources
+
+- Taunts can generate additional aggro using the approved DM guidelines in the Enemy Behaviour section.
+- Failure on an Intelligent Support Detection CHA check can generate a small DM-determined amount of additional aggro.
+
+### Shared aggro pool
+
+All enemies in an encounter use the same player aggro values. There are no separate per-enemy aggro tables.
+
+The player with the highest accumulated aggro is generally more likely to attract enemy attention, but the highest value does not guarantee that the enemy must select that player. Enemy intelligence, instincts, personality, and DM-controlled behaviour may influence target selection.
+
+No universal probability formula or weighted spin-wheel procedure is established.
+
+## Tier 4 — Aggro Decay
+
+A player who completes their turn without attacking or healing loses **5 aggro**.
+
+\[
+A_{\text{After Decay}}=A_{\text{Before Decay}}-5
+\]
+
+Aggro cannot fall below the established minimum of 30.
+
+### Actions and decay
+
+| Player's action | Prevents the 5 aggro decay? |
 |---|---|
-| 100 | Every player’s starting base aggro |
-| CHA | Actual Charisma ability score, not the Charisma modifier |
-| S | Applicable creature-size modifier |
-| D | Total damage dealt by that player during the current fight |
-| H | Total HP restored by that player through healing during the current fight |
+| Attacking | Yes |
+| Healing | Yes |
+| Movement | No |
+| Defensive action | No |
+| Utility action | No |
+| Doing nothing | No |
 
-### Charisma
+A defensive or utility action prevents decay only if it also involves attacking or healing.
 
-- CHA 10 is neutral: it does not change the starting base aggro.
-- Every point of CHA above 10 reduces starting aggro by 2.
-- Every point of CHA below 10 increases starting aggro by 2.
-- Use the actual ability score, not the ability modifier.
+Decay applies to all accumulated aggro, not just Base Aggro. This includes damage-generated, healing-generated, HP-loss, taunt-generated, and other accumulated aggro.
 
-The Charisma formula was approved in the earlier project discussion. It is not an unresolved proposal.
+Small attacks can reset decay. This is an intentional tactical trade-off because attacking can endanger teammates.
 
-## 2. Accumulated damage and healing
+### Unconscious players
 
-Aggro from damage and healing accumulates throughout the entire fight.
+- A player at 0 HP retains their accumulated aggro.
+- An unconscious player cannot generate additional aggro.
+- For every round the player remains unconscious, they lose 5 aggro.
+- When revived during the encounter, the player resumes with their remaining accumulated aggro after the unconscious-round deductions.
 
-| Action | Aggro gained |
+**Example:** A player falls unconscious with 180 aggro and remains down for three rounds. Their aggro becomes 165. If revived, they return with 165 aggro.
+
+### Combat aggro limits
+
+- Minimum accumulated combat aggro: **30**.
+- Maximum accumulated combat aggro: **Unlimited**.
+
+The minimum applies to Player's Aggro and accumulated combat aggro.
+
+## Tier 5 — End of Combat
+
+When combat ends, every player's aggro resets to their normal Tier 1 Player's Aggro.
+
+\[
+A_{\text{Combat}}\longrightarrow A_{\text{Player}}
+\]
+
+Combat-generated aggro does not carry into the next encounter. The next encounter starts from the player's Player's Aggro, recalculated using their applicable CHA and equipment.
+
+---
+
+# Part II — Enemy Behaviour and Targeting
+
+## 1. Enemy Instincts
+
+Different species and creatures may have instincts, personalities, and combat priorities that influence target selection. These are behavioural tendencies, not mandatory rules.
+
+### Approved instinct examples
+
+| Creature or enemy type | Natural targeting preference |
+|---|---|
+| Wolves | Wounded targets; isolated targets |
+| Goblins | Vulnerable-looking targets |
+| Spiders | Restrained targets; trapped targets |
+| Dragons | Greatest perceived threat |
+| Assassins and Hunters | Rear-guard support; strategically important targets |
+| Undead | Closest living target |
+| Predatory Beasts | Weakest-looking targets |
+| Demons | Magical threats; strategically important targets |
+
+### 10% instinct aggro bonus
+
+At the beginning of combat:
+1. The DM identifies the player or players who match the enemy's instinctive target preference.
+2. Each identified player receives **+10% of their Player's Aggro**.
+3. The bonus does not accumulate or repeat each round.
+4. The bonus influences the aggro value; it does not force the enemy to attack that player.
+
+A different player can still have the highest aggro and remain more likely to be targeted.
+
+### Mixed-species encounters
+
+When enemies of multiple species are present, the DM decides which species' instincts govern the encounter. The DM's selected instinct is handled using the same 10% principle.
+
+The DM retains control over enemy behaviour. The system does not require a separate aggro table for every species.
+
+## 2. Intelligent Support Detection
+
+This mechanic allows an intelligent enemy to recognise a player operating in a rear-guard support role.
+
+**Timing: Once only, at the beginning of combat. It is not repeated every round.**
+
+Procedure:
+1. An intelligent enemy identifies a player operating in a rear-guard support role.
+2. The identified player makes a CHA check.
+3. On success, the player receives no additional aggro from this check.
+4. On failure, the player gains a small amount of additional aggro.
+
+The DM determines:
+- The CHA check DC.
+- The additional aggro gained on failure.
+- Whether the enemy is capable of identifying the support player in the situation.
+
+Applicable enemy examples include intelligent humanoids, demons, hunters, elves, humanoid tacticians, and other creatures capable of tactical reasoning.
+
+## 3. Taunts and Aggro Manipulation
+
+Taunts and special aggro manipulation may generate additional aggro. Whether an enemy responds depends on the enemy's intelligence, species, personality, and design.
+
+### Approved DM reference ranges
+
+| Taunt strength | Additional aggro |
 |---|---:|
-| Deal 1 damage | +1 aggro to the attacker |
-| Restore 1 HP through healing | +1 aggro to the healer |
-| Receive healing | 0 aggro from that healing |
+| Minor | +5 to +10 |
+| Moderate | +11 to +20 |
+| Strong | +21 to +30 |
+| Exceptional | +31 to +40 |
 
-**Healing aggro belongs entirely to the healer.** The player receiving the healing does not gain aggro from the restored HP.
+The DM decides:
+- Whether the enemy responds to the taunt.
+- Which strength category applies.
+- The exact additional aggro within the selected range.
 
-Damage and healing are cumulative during the fight; they are not limited to the current turn.
+These ranges are DM guidelines, not guaranteed rewards. A taunt adds aggro; it does not automatically force an enemy to target the taunter.
 
-## 3. Creature-size modifier
+There is no universal mandatory taunt response for every enemy.
 
-Creature size modifies a player's aggro only when the enemy making the target decision has low Intelligence.
+## 4. Enemy Intelligence
 
-| Player character's size | Modifier |
-|---|---:|
-| Tiny | -10 |
-| Small | -5 |
-| Medium | 0 |
-| Large | +5 |
-| Huge | +10 |
-| Gargantuan | +15 |
+Enemy intelligence influences how creatures interpret aggro and choose targets.
 
-Against enemies that do not have low Intelligence, this size modifier does not apply.
+| Category | Behaviour |
+|---|---|
+| Low-INT | More influenced by physical presence and instinctive targeting. Size-based aggro adjustments apply. |
+| Average-INT | Uses the general aggro system without size-based adjustments. |
+| High-INT | Can reason, evaluate threats, identify rear-guard support, and use tactical targeting behaviour. Humans are an example of creatures that can fall into this category. |
 
-## 4. Stealth
+Numerical INT thresholds have not been established. The DM classifies enemies based on their ability to reason and factor opponents into decisions. Intelligent enemies may also have special targeting behaviour.
 
-- Stealth reduces a player's aggro while that player remains unseen.
-- The Stealth reduction can stack with the Charisma effect.
-- Physical contact cancels the Stealth-based aggro reduction.
-- If an enemy notices the player, the Stealth-based reduction is cancelled.
+## 5. Aggro ties
 
-The exact numerical amount of the Stealth reduction has not been established in the recovered decisions.
+When multiple players have equal aggro, the DM decides which player the enemy targets.
 
-## 5. Enemy target selection — weighted spin wheel
+## 6. Rejected mechanics
 
-Target selection uses a spin-wheel website with each party member weighted according to their current aggro.
+| Mechanic | Status | Reason |
+|---|---|---|
+| Proximity-based aggro | Rejected | Tracking aggro adjustments every time a player moves would waste DM time. |
+| Individual aggro tables for every enemy | Rejected | Maintaining separate tables for every enemy would be unnecessarily complicated. |
 
-`Player's selection probability = (Player's aggro ÷ Total party aggro) × 100%`
+---
 
-In other words:
+# Part III — DM Adjudication Notes
 
-1. Determine each party member's current aggro.
-2. Add the party members' aggro values to obtain the total party aggro.
-3. Give each player a share of the wheel proportional to their aggro divided by the total.
-4. Use the weighted spin to select the enemy's target.
+The core system is complete. The following special-case procedures are not given a universal formula in the current baseline; the DM adjudicates them when they arise.
 
-### What this means in combat
+- **AoE damage:** No special aggregation rule is established for whether aggro should be calculated separately for each enemy hit or once from total damage dealt.
+- **Mixed-intelligence encounters and size:** Size adjustments apply against Low-INT enemies; Average-INT and High-INT enemies ignore them. No separate calculation procedure is established for a mixed-intelligence encounter using the shared aggro pool.
+- **Starting-adjustment order:** The rules define CHA/equipment, Stealth, size, and instinct adjustments, but do not establish one universal precedence formula for every combination of these modifiers.
+- **Stealth decimals:** A decimal-rounding convention has not been specified.
+- **INT thresholds:** There are no numerical boundaries for Low-INT, Average-INT, or High-INT. The DM classifies creatures.
+- **Target selection:** Aggro informs enemy attention and target likelihood, but no universal probability formula or weighted spin-wheel procedure is established.
 
-- More aggro means a higher probability of being selected.
-- The highest-aggro player is not automatically selected every time.
-- A player who deals the most damage will generally build substantial aggro.
-- A healer can overtake that player if the healer's accumulated healing aggro is greater.
-- A change in aggro changes the selection probability; it does not automatically force the enemy to change targets.
+These notes do not replace or alter established mechanics. They preserve the DM's authority over cases for which no universal procedure has been approved.
 
-## 6. Remaining implementation details
+## Design principles
 
-These are the details not established in the recovered discussion. They should not be filled in without the project owner's decision:
+1. Keep the system manageable for the DM.
+2. Preserve tactical decision-making and gameplay balance.
+3. Do not add unnecessary bookkeeping.
+4. Do not create separate aggro tables for every enemy.
+5. Treat enemy instincts as behavioural tendencies, not mandatory rules.
+6. Preserve established numerical values and formulas.
+7. Do not turn DM-dependent guidance into mandatory mechanics.
+8. Make future changes only through deliberate DM-approved revisions and testing.
 
-- The exact numerical amount by which Stealth reduces aggro.
-- Exactly when or how often the weighted spin wheel is used to select or reselect a target.
-- Whether non-healing support actions generate aggro, and if so, how much.
-- Any additional modifiers or special-case interactions.
-- How accumulated values are handled between separate fights.
-
-The core damage, healing, Charisma, size-modifier, and weighted target-selection rules above are established and should not be marked as undecided.
-
-## Development boundary
-
-Aggro System is priority 1 on the ideas list, but Weapon Mastery remains the current development focus. These are separate systems; no interaction between them is assumed unless the project owner approves it.
+**Aggro System v1.0 is the completed baseline.** Future revisions must preserve this version's established rules unless the DM explicitly approves a change.

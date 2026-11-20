@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Aggro System rules: Charisma, accumulated damage and healing, creature size, Stealth, and weighted enemy target selection.">
-  <title>Aggro System | The Emperor's DND System</title>
+  <meta name="description" content="The complete Aggro System: five player-aggro tiers, combat generation, decay, enemy instincts, support detection, taunts, and DM targeting rules.">
+  <title>Aggro System v1.0 | The Emperor's DND System</title>
   <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
@@ -17,109 +17,367 @@
       <a href="https://github.com/NEXMD/THE-EMPERORS-DND-SYSTEM">Repository ↗</a>
     </nav>
   </header>
+
   <main>
     <section class="page-title">
       <p class="breadcrumb"><a href="../index.html">CODEX</a> / SYSTEMS / AGGRO</p>
-      <p class="eyebrow">SYSTEM 02 · PRIORITY 01</p>
+      <p class="eyebrow">SYSTEM 02 · VERSION 1.0</p>
       <h1>AGGRO SYSTEM</h1>
-      <p class="subtitle">WHO BECOMES THE ENEMY'S PRIORITY?</p>
-      <p class="page-intro">Aggro determines each player's probability of being selected as an enemy target. Damage, healing, Charisma, creature size and Stealth all contribute to the system.</p>
-      <p class="status-line"><span class="status">CORE RULES ESTABLISHED</span> Some implementation details remain open. Weapon Mastery is the current development focus.</p>
+      <p class="subtitle">THREAT, ATTENTION & ENEMY TARGETING</p>
+      <p class="page-intro">A shared enemy-targeting system built around each player's starting aggro, combat actions, survival, and the instincts and intelligence of their enemies.</p>
+      <p class="status-line"><span class="status">COMPLETE BASELINE</span> Five player-aggro tiers · Shared encounter aggro · DM-controlled enemy behaviour</p>
     </section>
 
     <section class="section-block">
-      <div class="section-heading"><div><p class="eyebrow">01 / AGGRO CALCULATION</p><h2>The Formula</h2></div><p class="section-note">The Charisma formula and cumulative damage/healing rules were established in the earlier discussion.</p></div>
+      <div class="section-heading">
+        <div><p class="eyebrow">SYSTEM OVERVIEW</p><h2>How Aggro Is Organised</h2></div>
+        <p class="section-note">Player aggro is calculated in tiers. Enemy behaviour is documented separately.</p>
+      </div>
+      <div class="system-grid">
+        <article class="system-card"><span>TIER 0</span><h3>Base Aggro</h3><p>Every player begins from the same reference value.</p><small>100 AGGRO</small></article>
+        <article class="system-card"><span>TIER 1</span><h3>Player's Aggro</h3><p>CHA and equipment determine the player's individual starting value.</p><small>MINIMUM 30 · NO MAXIMUM</small></article>
+        <article class="system-card"><span>TIER 2</span><h3>Stealth Aggro</h3><p>Stealth conditionally reduces Player's Aggro while the player remains unseen.</p><small>UP TO 20% REDUCTION</small></article>
+        <article class="system-card"><span>TIER 3</span><h3>Player's Aggro in Combat</h3><p>Damage, healing, HP loss, and approved encounter adjustments change accumulated aggro.</p><small>SHARED ENCOUNTER POOL</small></article>
+        <article class="system-card"><span>TIER 4</span><h3>Aggro Decay</h3><p>Players who do not attack or heal lose accumulated aggro.</p><small>-5 PER PLAYER TURN</small></article>
+        <article class="system-card"><span>TIER 5</span><h3>End of Combat</h3><p>Combat aggro is cleared and each player returns to normal Player's Aggro.</p><small>RESET AFTER BATTLE</small></article>
+      </div>
+      <p class="notice">All enemies in an encounter use one shared aggro pool. There are no separate aggro tables for individual enemies.</p>
+    </section>
+
+    <section class="section-block">
+      <div class="section-heading">
+        <div><p class="eyebrow">TIER 0 / UNIVERSAL START</p><h2>Base Aggro</h2></div>
+      </div>
       <div class="formula-panel">
-        <span class="skill-type">APPROVED AGGRO CALCULATION</span>
-        <p>A = 100 - 2 × (CHA - 10) + S + D + H</p>
+        <span class="skill-type">BASE VALUE</span>
+        <p>Every player begins with 100 Base Aggro.</p>
       </div>
-      <div class="table-wrap">
-        <table class="data-table"><thead><tr><th>Variable</th><th>Meaning</th></tr></thead><tbody>
-          <tr><td>100</td><td>Every player starts with 100 base aggro.</td></tr>
-          <tr><td>CHA</td><td>Actual Charisma score, not the Charisma modifier.</td></tr>
-          <tr><td>S</td><td>Applicable creature-size modifier, only against enemies with low Intelligence.</td></tr>
-          <tr><td>D</td><td>Total damage dealt by that player during the fight.</td></tr>
-          <tr><td>H</td><td>Total HP restored by that player through healing during the fight.</td></tr>
-        </tbody></table>
+      <p class="page-intro">This is the universal reference before CHA, equipment, Stealth, size, or other encounter-start adjustments are applied.</p>
+    </section>
+
+    <section class="section-block">
+      <div class="section-heading">
+        <div><p class="eyebrow">TIER 1 / INDIVIDUAL START</p><h2>Player's Aggro</h2></div>
+        <p class="section-note">Recalculate whenever a character enters combat, using their current CHA and equipment.</p>
       </div>
-      <p class="notice">CHA 10 is neutral. Each point above 10 reduces starting aggro by 2; each point below 10 increases it by 2.</p>
-    </section>
-
-    <section class="section-block">
-      <div class="section-heading"><div><p class="eyebrow">02 / COMBAT ACCUMULATION</p><h2>Damage & Healing</h2></div><p class="section-note">Both values accumulate throughout the entire fight, not just during the current turn.</p></div>
-      <div class="table-wrap">
-        <table class="data-table"><thead><tr><th>Combat event</th><th>Aggro gained</th><th>Who receives it?</th></tr></thead><tbody>
-          <tr><td>Deal 1 damage</td><td>+1</td><td>The attacker</td></tr>
-          <tr><td>Restore 1 HP through healing</td><td>+1</td><td>The healer</td></tr>
-          <tr><td>Receive healing</td><td>0</td><td>The recipient receives no aggro from that healing</td></tr>
-        </tbody></table>
-      </div>
-      <p class="notice">Healing aggro belongs entirely to the healer. The healed player does not receive the aggro generated by the restored HP.</p>
-    </section>
-
-    <section class="section-block">
-      <div class="section-heading"><div><p class="eyebrow">03 / CHARACTER ATTRIBUTE</p><h2>Charisma</h2></div></div>
-      <ul class="rule-list">
-        <li>Use the actual Charisma ability score, not its modifier.</li>
-        <li>CHA 10 is the neutral reference point.</li>
-        <li>Every point above CHA 10 reduces starting aggro by 2.</li>
-        <li>Every point below CHA 10 increases starting aggro by 2.</li>
-      </ul>
-      <p class="notice">The Charisma formula is an established rule, not a pending proposal.</p>
-    </section>
-
-    <section class="section-block">
-      <div class="section-heading"><div><p class="eyebrow">04 / CREATURE SIZE</p><h2>Size Modifier</h2></div><p class="section-note">This modifier applies only when the enemy making the target decision has low Intelligence.</p></div>
-      <div class="table-wrap">
-        <table class="data-table"><thead><tr><th>Player character's size</th><th>Aggro modifier</th></tr></thead><tbody>
-          <tr><td>Tiny</td><td>-10</td></tr><tr><td>Small</td><td>-5</td></tr><tr><td>Medium</td><td>0</td></tr><tr><td>Large</td><td>+5</td></tr><tr><td>Huge</td><td>+10</td></tr><tr><td>Gargantuan</td><td>+15</td></tr>
-        </tbody></table>
-      </div>
-      <p class="notice">Against enemies that do not have low Intelligence, the size modifier does not apply.</p>
-    </section>
-
-    <section class="section-block">
-      <div class="section-heading"><div><p class="eyebrow">05 / STEALTH</p><h2>Remaining Unseen</h2></div></div>
-      <ul class="rule-list">
-        <li>Stealth reduces aggro while the player remains unseen.</li>
-        <li>The Stealth reduction stacks with the Charisma effect.</li>
-        <li>Physical contact cancels the Stealth-based aggro reduction.</li>
-        <li>If an enemy notices the player, the Stealth-based reduction is cancelled.</li>
-      </ul>
-      <p class="notice">The exact numerical Stealth reduction is still to be specified.</p>
-    </section>
-
-    <section class="section-block">
-      <div class="section-heading"><div><p class="eyebrow">06 / TARGET SELECTION</p><h2>Weighted Spin Wheel</h2></div><p class="section-note">Enemy targeting is weighted by each party member's current aggro.</p></div>
       <div class="formula-panel">
-        <span class="skill-type">PLAYER SELECTION PROBABILITY</span>
-        <p>P = (Player Aggro ÷ Total Party Aggro) × 100%</p>
+        <span class="skill-type">CHARISMA FORMULA</span>
+        <p>A = 100 - 2 × (Modified CHA - 10)</p>
+      </div>
+      <ul class="rule-list">
+        <li>Use the actual CHA ability score, not the CHA modifier.</li>
+        <li>CHA 10 is neutral: 100 aggro before direct item modifiers.</li>
+        <li>Every CHA point above 10 reduces aggro by 2.</li>
+        <li>Every CHA point below 10 increases aggro by 2.</li>
+        <li>Items may increase CHA or directly reduce aggro.</li>
+        <li>Calculate item-based CHA changes first; apply direct aggro item modifiers afterward.</li>
+      </ul>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead><tr><th>CHA</th><th>CHA aggro</th><th>CHA</th><th>CHA aggro</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>118</td><td>11</td><td>98</td></tr>
+            <tr><td>2</td><td>116</td><td>12</td><td>96</td></tr>
+            <tr><td>3</td><td>114</td><td>13</td><td>94</td></tr>
+            <tr><td>4</td><td>112</td><td>14</td><td>92</td></tr>
+            <tr><td>5</td><td>110</td><td>15</td><td>90</td></tr>
+            <tr><td>6</td><td>108</td><td>16</td><td>88</td></tr>
+            <tr><td>7</td><td>106</td><td>17</td><td>86</td></tr>
+            <tr><td>8</td><td>104</td><td>18</td><td>84</td></tr>
+            <tr><td>9</td><td>102</td><td>19</td><td>82</td></tr>
+            <tr><td>10</td><td>100</td><td>20</td><td>80</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h3 class="table-heading">Equipment example</h3>
+      <p class="page-intro">A character has CHA 14, an item that increases CHA by 2, and another item that directly reduces aggro by 5.</p>
+      <div class="table-wrap">
+        <table class="data-table"><thead><tr><th>Step</th><th>Calculation</th><th>Result</th></tr></thead><tbody>
+          <tr><td>Modified CHA</td><td>14 + 2</td><td>16</td></tr>
+          <tr><td>CHA aggro</td><td>100 - 2 × (16 - 10)</td><td>88</td></tr>
+          <tr><td>Direct item reduction</td><td>88 - 5</td><td>83</td></tr>
+          <tr><td>Player's Aggro</td><td>Apply minimum of 30 if needed</td><td><strong>83</strong></td></tr>
+        </tbody></table>
+      </div>
+      <p class="notice">Minimum Player's Aggro: 30. Maximum: unlimited.</p>
+    </section>
+
+    <section class="section-block">
+      <div class="section-heading">
+        <div><p class="eyebrow">TIER 2 / CONDITIONAL REDUCTION</p><h2>Player's Aggro (Stealth)</h2></div>
+        <p class="section-note">The Stealth modifier comes from the Stealth skill modifier, not the DEX score.</p>
+      </div>
+      <div class="formula-panel">
+        <span class="skill-type">STEALTH FORMULA</span>
+        <p>Stealth Aggro = Player's Aggro × (1 - reduction)</p>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table"><thead><tr><th>Stealth modifier</th><th>Aggro reduction</th><th>Remaining percentage</th></tr></thead><tbody>
+          <tr><td>+0 to +1</td><td>0%</td><td>100%</td></tr>
+          <tr><td>+2 to +3</td><td>2%</td><td>98%</td></tr>
+          <tr><td>+4 to +5</td><td>4%</td><td>96%</td></tr>
+          <tr><td>+6 to +7</td><td>6%</td><td>94%</td></tr>
+          <tr><td>+8 to +9</td><td>8%</td><td>92%</td></tr>
+          <tr><td>+10 to +11</td><td>10%</td><td>90%</td></tr>
+          <tr><td>+12 to +13</td><td>12%</td><td>88%</td></tr>
+          <tr><td>+14 to +15</td><td>14%</td><td>86%</td></tr>
+          <tr><td>+16 to +17</td><td>16%</td><td>84%</td></tr>
+          <tr><td>+18 to +19</td><td>18%</td><td>82%</td></tr>
+          <tr><td>+20</td><td>20%</td><td>80%</td></tr>
+        </tbody></table>
+      </div>
+      <h3 class="table-heading">Conditions for Stealth</h3>
+      <ul class="rule-list">
+        <li>The player must remain unseen and undetected.</li>
+        <li>Attacking, healing, or performing any supporting action removes the Stealth advantage.</li>
+        <li>If an enemy notices or detects the player, the reduction is cancelled.</li>
+        <li>Physical interaction or touching an enemy in a way that reveals the player's presence also cancels the reduction.</li>
+        <li>CHA and Stealth reductions can stack.</li>
+      </ul>
+      <h3 class="table-heading">When Stealth is lost</h3>
+      <p class="page-intro">Return to normal Player's Aggro first, then add the aggro generated by the action that revealed the player.</p>
+      <div class="formula-panel">
+        <span class="skill-type">EXAMPLE</span>
+        <p>83 normal Player's Aggro + 20 damage aggro = 103 combat aggro</p>
+      </div>
+      <p class="notice">The rules do not specify a decimal-rounding convention for Stealth results.</p>
+    </section>
+
+    <section class="section-block">
+      <div class="section-heading">
+        <div><p class="eyebrow">TIER 3 / COMBAT ACCUMULATION</p><h2>Player's Aggro in Combat</h2></div>
+        <p class="section-note">Combat actions add aggro to the player's accumulated combat value.</p>
+      </div>
+      <h3 class="table-heading">Damage-generated aggro</h3>
+      <div class="table-wrap">
+        <table class="data-table"><thead><tr><th>Character type</th><th>Conversion</th><th>Formula</th><th>40 damage example</th></tr></thead><tbody>
+          <tr><td>Normal character</td><td>1 damage = 1 aggro</td><td>Damage × 1</td><td>+40</td></tr>
+          <tr><td>Tank</td><td>1 damage = 2 aggro</td><td>Damage × 2</td><td>+80</td></tr>
+        </tbody></table>
+      </div>
+      <p class="notice">The Tank multiplier compensates for typically lower damage output. It applies to damage-generated aggro, not healing or HP-loss aggro.</p>
+
+      <h3 class="table-heading">Healing-generated aggro</h3>
+      <div class="formula-panel">
+        <span class="skill-type">HEALING CONVERSION</span>
+        <p>1 effective HP restored = +1 aggro to the healer</p>
+      </div>
+      <ul class="rule-list">
+        <li>Only effective HP restored generates aggro.</li>
+        <li>Overhealing generates no aggro.</li>
+        <li>Healing aggro belongs to the healer, not the healed player.</li>
+      </ul>
+
+      <h3 class="table-heading">HP-loss aggro</h3>
+      <div class="formula-panel">
+        <span class="skill-type">PER DAMAGE EVENT · ROUND DOWN</span>
+        <p>HP-loss aggro = floor(damage received ÷ 5)</p>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table"><thead><tr><th>Damage event</th><th>Calculation</th><th>Aggro gained</th></tr></thead><tbody>
+          <tr><td>16 damage in Round 3</td><td>floor(16 ÷ 5)</td><td>+3</td></tr>
+          <tr><td>5 damage in Round 4</td><td>floor(5 ÷ 5)</td><td>+1</td></tr>
+          <tr><td>8 damage in one event</td><td>floor(8 ÷ 5)</td><td>+1</td></tr>
+          <tr><td>12 damage in one event</td><td>floor(12 ÷ 5)</td><td>+2</td></tr>
+        </tbody></table>
+      </div>
+      <p class="notice">Calculate each separate damage event individually, round down, and add the result to accumulated combat aggro. Do not combine separate hits into one calculation. Poison, burning, and other ongoing damage-over-time effects generate no aggro.</p>
+
+      <h3 class="table-heading">Other aggro additions</h3>
+      <ul class="rule-list">
+        <li>Taunts may add aggro using the DM reference ranges below.</li>
+        <li>Failure on an Intelligent Support Detection CHA check may add a small DM-determined amount of aggro.</li>
+      </ul>
+      <p class="notice">All enemies in the encounter use one shared aggro pool. The system does not maintain separate aggro values for every enemy.</p>
+    </section>
+
+    <section class="section-block">
+      <div class="section-heading">
+        <div><p class="eyebrow">TIER 4 / AGGRO REDUCTION</p><h2>Aggro Decay</h2></div>
+        <p class="section-note">A player who does not attack or heal loses 5 accumulated aggro on their turn.</p>
+      </div>
+      <div class="formula-panel">
+        <span class="skill-type">DECAY</span>
+        <p>-5 aggro per player turn without attacking or healing</p>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table"><thead><tr><th>Action</th><th>Prevents decay?</th></tr></thead><tbody>
+          <tr><td>Attack</td><td>Yes</td></tr>
+          <tr><td>Heal</td><td>Yes</td></tr>
+          <tr><td>Movement</td><td>No</td></tr>
+          <tr><td>Defensive action</td><td>No</td></tr>
+          <tr><td>Utility action</td><td>No</td></tr>
+          <tr><td>Do nothing</td><td>No</td></tr>
+        </tbody></table>
+      </div>
+      <ul class="rule-list">
+        <li>Decay applies to all accumulated aggro, not only Base Aggro.</li>
+        <li>A defensive or utility action prevents decay only if it also involves attacking or healing.</li>
+        <li>Small attacks can reset decay. This is an intentional tactical trade-off because attacking can endanger teammates.</li>
+      </ul>
+      <h3 class="table-heading">Unconscious players</h3>
+      <ul class="rule-list">
+        <li>Players at 0 HP retain their accumulated aggro.</li>
+        <li>Unconscious players cannot generate additional aggro.</li>
+        <li>They lose 5 aggro for every round they remain unconscious.</li>
+        <li>After revival, they retain the remaining aggro after those deductions.</li>
+      </ul>
+      <div class="formula-panel">
+        <span class="skill-type">EXAMPLE</span>
+        <p>180 aggro - (3 unconscious rounds × 5) = 165 aggro on revival</p>
+      </div>
+      <p class="notice">Minimum accumulated combat aggro: 30. Maximum: unlimited.</p>
+    </section>
+
+    <section class="section-block">
+      <div class="section-heading">
+        <div><p class="eyebrow">TIER 5 / ENCOUNTER RESET</p><h2>End of Combat</h2></div>
+      </div>
+      <div class="formula-panel">
+        <span class="skill-type">POST-COMBAT RULE</span>
+        <p>Accumulated Combat Aggro → normal Player's Aggro</p>
+      </div>
+      <p class="page-intro">When combat ends, every player's aggro is reset to their normal Tier 1 Player's Aggro. Combat-generated aggro does not carry into the next encounter.</p>
+    </section>
+
+    <section class="section-block">
+      <div class="section-heading">
+        <div><p class="eyebrow">ENEMY BEHAVIOUR / 01</p><h2>Enemy Instincts</h2></div>
+        <p class="section-note">Instincts influence target preference; they do not override the shared aggro ranking.</p>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table"><thead><tr><th>Creature or enemy type</th><th>Instinctive preference</th></tr></thead><tbody>
+          <tr><td>Wolves</td><td>Wounded targets; isolated targets</td></tr>
+          <tr><td>Goblins</td><td>Vulnerable-looking targets</td></tr>
+          <tr><td>Spiders</td><td>Restrained targets; trapped targets</td></tr>
+          <tr><td>Dragons</td><td>Greatest perceived threat</td></tr>
+          <tr><td>Assassins and Hunters</td><td>Rear-guard support; strategically important targets</td></tr>
+          <tr><td>Undead</td><td>Closest living target</td></tr>
+          <tr><td>Predatory Beasts</td><td>Weakest-looking targets</td></tr>
+          <tr><td>Demons</td><td>Magical threats; strategically important targets</td></tr>
+        </tbody></table>
+      </div>
+      <h3 class="table-heading">10% instinct bonus</h3>
+      <ul class="rule-list">
+        <li>At the beginning of combat, the DM identifies the player or players who match the enemies' instincts.</li>
+        <li>Each identified player receives +10% of their Player's Aggro.</li>
+        <li>The bonus does not accumulate and is not repeated every round.</li>
+        <li>The bonus changes the aggro value; it does not force the enemy to attack that player.</li>
+        <li>Another player may still have the highest aggro and remain more likely to be targeted.</li>
+      </ul>
+      <h3 class="table-heading">Mixed-species encounters</h3>
+      <p class="page-intro">When multiple species are present, the DM decides which species' instincts govern the encounter. The same 10% principle applies.</p>
+      <p class="notice">Instincts are behavioural tendencies, not mandatory targeting rules. The DM retains control over enemy behaviour.</p>
+    </section>
+
+    <section class="section-block">
+      <div class="section-heading">
+        <div><p class="eyebrow">ENEMY BEHAVIOUR / 02</p><h2>Intelligent Support Detection</h2></div>
+        <p class="section-note">One check only, at the beginning of combat.</p>
       </div>
       <ol class="rule-list">
-        <li>Determine each party member's current aggro.</li>
-        <li>Add all party members' aggro values to get total party aggro.</li>
-        <li>Assign each player a wheel share proportional to their aggro divided by total party aggro.</li>
-        <li>Use the weighted spin wheel to select the enemy's target.</li>
+        <li>An intelligent enemy identifies a player operating in a rear-guard support role.</li>
+        <li>The identified player makes a CHA check.</li>
+        <li>On success, the player receives no additional aggro from this check.</li>
+        <li>On failure, the player gains a small amount of additional aggro.</li>
       </ol>
-      <p class="page-intro">The player with the highest aggro has the greatest chance of being selected, but is not guaranteed to be selected. A healer can become the most likely target if their accumulated healing aggro exceeds another player's accumulated damage aggro.</p>
-      <p class="notice">An aggro change adjusts the player's probability; it does not automatically force the enemy to switch targets.</p>
+      <div class="table-wrap">
+        <table class="data-table"><thead><tr><th>Decision</th><th>Who determines it?</th></tr></thead><tbody>
+          <tr><td>CHA check DC</td><td>DM</td></tr>
+          <tr><td>Additional aggro on failure</td><td>DM</td></tr>
+          <tr><td>Whether the enemy can identify the support player</td><td>DM, based on the situation and enemy</td></tr>
+        </tbody></table>
+      </div>
+      <p class="notice">This check happens once at the beginning of combat. It is not repeated every round or every time the player performs a support action.</p>
     </section>
 
     <section class="section-block">
-      <div class="section-heading"><div><p class="eyebrow">07 / REMAINING DETAILS</p><h2>Still to Be Specified</h2></div></div>
+      <div class="section-heading">
+        <div><p class="eyebrow">ENEMY BEHAVIOUR / 03</p><h2>Taunts & Aggro Manipulation</h2></div>
+        <p class="section-note">Approved ranges are DM guidelines. Enemy response remains DM-dependent.</p>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table"><thead><tr><th>Taunt strength</th><th>Additional aggro</th></tr></thead><tbody>
+          <tr><td>Minor</td><td>+5 to +10</td></tr>
+          <tr><td>Moderate</td><td>+11 to +20</td></tr>
+          <tr><td>Strong</td><td>+21 to +30</td></tr>
+          <tr><td>Exceptional</td><td>+31 to +40</td></tr>
+        </tbody></table>
+      </div>
       <ul class="rule-list">
-        <li>The exact numerical amount by which Stealth reduces aggro.</li>
-        <li>Exactly when or how often the weighted spin wheel is used to select or reselect a target.</li>
-        <li>Whether non-healing support actions generate aggro, and if so, how much.</li>
-        <li>Any additional modifiers or special-case interactions.</li>
-        <li>How accumulated values are handled between separate fights.</li>
+        <li>The DM decides whether the enemy responds.</li>
+        <li>The DM chooses the applicable strength category and exact amount within its range.</li>
+        <li>Effectiveness depends on enemy intelligence, species, personality, and design.</li>
+        <li>A taunt adds aggro; it does not automatically force an enemy to attack the taunter.</li>
       </ul>
-      <p class="notice">Damage, healing, Charisma, creature-size modifiers and weighted target selection are established mechanics. They are not pending decisions.</p>
-      <p><a class="text-link" href="https://github.com/NEXMD/THE-EMPERORS-DND-SYSTEM/blob/main/Aggro%20System/README.md">Open full Aggro System documentation ↗</a></p>
+    </section>
+
+    <section class="section-block">
+      <div class="section-heading">
+        <div><p class="eyebrow">ENEMY BEHAVIOUR / 04</p><h2>Enemy Intelligence</h2></div>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table"><thead><tr><th>Category</th><th>Behaviour</th><th>Size adjustment</th></tr></thead><tbody>
+          <tr><td>Low-INT</td><td>More influenced by physical presence and instinctive targeting.</td><td>Applies</td></tr>
+          <tr><td>Average-INT</td><td>Uses the general aggro system without size-based adjustments.</td><td>Ignored</td></tr>
+          <tr><td>High-INT</td><td>Can reason, evaluate threats, identify rear-guard support, and use tactical targeting. Humans are an example.</td><td>Ignored</td></tr>
+        </tbody></table>
+      </div>
+      <p class="notice">No numerical INT thresholds are established. The DM classifies creatures according to their reasoning and tactical decision-making.</p>
+    </section>
+
+    <section class="section-block">
+      <div class="section-heading">
+        <div><p class="eyebrow">ENCOUNTER MODIFIER</p><h2>Size-Based Aggro</h2></div>
+        <p class="section-note">Applies only against Low-INT enemies and is added to Player's Aggro at the beginning of combat.</p>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table"><thead><tr><th>Player character size</th><th>Aggro adjustment</th></tr></thead><tbody>
+          <tr><td>Tiny</td><td>-10</td></tr>
+          <tr><td>Small</td><td>-5</td></tr>
+          <tr><td>Medium</td><td>0</td></tr>
+          <tr><td>Large</td><td>+5</td></tr>
+          <tr><td>Huge</td><td>+10</td></tr>
+          <tr><td>Gargantuan</td><td>+15</td></tr>
+        </tbody></table>
+      </div>
+      <p class="notice">Average-INT and High-INT enemies ignore size-based aggro adjustments.</p>
+    </section>
+
+    <section class="section-block">
+      <div class="section-heading">
+        <div><p class="eyebrow">TARGETING PRINCIPLES</p><h2>Shared Aggro & DM Control</h2></div>
+      </div>
+      <ul class="rule-list">
+        <li>All enemies in an encounter use the same shared player aggro values.</li>
+        <li>The player with the highest aggro is generally more likely to attract attention, but is not guaranteed to be selected.</li>
+        <li>Enemy instincts, intelligence, personality, and tactical priorities may influence target selection.</li>
+        <li>When players have equal aggro, the DM decides which player is targeted.</li>
+        <li>There is no proximity-based aggro adjustment.</li>
+        <li>There are no separate aggro tables for individual enemies.</li>
+      </ul>
+      <p class="notice">No universal target-selection probability formula or weighted spin-wheel procedure is part of the approved baseline.</p>
+    </section>
+
+    <section class="section-block">
+      <div class="section-heading">
+        <div><p class="eyebrow">DM REFERENCE</p><h2>Adjudication Notes</h2></div>
+        <p class="section-note">The core system is complete. These specific edge cases do not have a universal formula in Version 1.0.</p>
+      </div>
+      <ul class="rule-list">
+        <li><strong>AoE damage:</strong> No special rule determines whether aggro is calculated per enemy hit or from total damage dealt.</li>
+        <li><strong>Mixed-intelligence encounters:</strong> Size adjustments apply against Low-INT enemies and are ignored by Average-INT and High-INT enemies. No separate calculation procedure is established for mixed groups using the shared pool.</li>
+        <li><strong>Starting-adjustment order:</strong> No universal precedence formula is specified for every combination of Stealth, size, and instinct adjustments.</li>
+        <li><strong>Stealth decimals:</strong> A decimal-rounding convention is not specified.</li>
+        <li><strong>INT thresholds:</strong> Numerical boundaries are not established; the DM classifies creatures.</li>
+        <li><strong>Target selection:</strong> Aggro informs attention and likelihood, but no fixed probability formula is established.</li>
+      </ul>
+      <p class="notice">These notes preserve DM discretion. They do not change established rules or make the completed baseline incomplete.</p>
+      <p><a class="text-link" href="https://github.com/NEXMD/THE-EMPERORS-DND-SYSTEM/blob/main/Aggro%20System/README.md">Open the full Aggro System rules on GitHub ↗</a></p>
     </section>
   </main>
   <footer class="site-footer">
-    <span>THE EMPEROR'S DND SYSTEM</span>
+    <span>THE EMPEROR'S DND SYSTEM · AGGRO SYSTEM v1.0</span>
     <span><a href="../index.html">BACK TO CODEX ↑</a></span>
   </footer>
 </body>

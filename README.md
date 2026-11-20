@@ -13,6 +13,10 @@ A homebrew tabletop role-playing game system: its weapons, skills, combat rules,
 - **Balance & Testing** — playtest observations and approved changes.
 - **Visual References** — reference images and artwork used by the project.
 
+## Ideas & development priorities
+
+- [Ideas & Development Priority List](docs/roadmap/ideas-and-priorities.md) — planned systems and their priority order. Weapon Mastery remains the current development focus.
+
 ## Current documented weapon
 
 - [Light Hammer — Rapid Impact](weapons/light-hammer.html) — first weapon profile and active-skill record.

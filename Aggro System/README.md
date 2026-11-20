@@ -1,26 +1,57 @@
 # Aggro System
 
 **Priority:** 1 on the Ideas & Development Priority List  
-**Status:** Design record; incomplete  
-**Current Weapon Mastery work remains separate.**
+**Status:** Core mechanics established; selected implementation details remain open.  
+**Current project focus:** Weapon Mastery. Aggro System remains separately documented.
 
 ## Core concept
 
-Every player has an aggro value that influences how likely enemies are to target them. The system is intended to make enemy targeting more dynamic than simply attacking whoever is closest.
+Every player has an aggro value. Enemies use those values to determine each player's probability of being selected as a target. The player with the highest aggro is more likely to be selected, but is not guaranteed to be selected.
 
-The Aggro System and Weapon Mastery are separate systems. Do not assume they interact unless that interaction is approved.
+## 1. Aggro calculation
 
-## Recorded mechanics
+The approved calculation is:
 
-### Base aggro
+`Aggro = 100 - 2 × (CHA - 10) + S + D + H`
 
-Every player starts with **100 base aggro**.
+Where:
 
-### Creature size modifier
+| Symbol | Meaning |
+|---|---|
+| 100 | Every player’s starting base aggro |
+| CHA | Actual Charisma ability score, not the Charisma modifier |
+| S | Applicable creature-size modifier |
+| D | Total damage dealt by that player during the current fight |
+| H | Total HP restored by that player through healing during the current fight |
 
-Creature size modifies aggro only against enemies with low Intelligence.
+### Charisma
 
-| Creature size | Aggro modifier |
+- CHA 10 is neutral: it does not change the starting base aggro.
+- Every point of CHA above 10 reduces starting aggro by 2.
+- Every point of CHA below 10 increases starting aggro by 2.
+- Use the actual ability score, not the ability modifier.
+
+The Charisma formula was approved in the earlier project discussion. It is not an unresolved proposal.
+
+## 2. Accumulated damage and healing
+
+Aggro from damage and healing accumulates throughout the entire fight.
+
+| Action | Aggro gained |
+|---|---:|
+| Deal 1 damage | +1 aggro to the attacker |
+| Restore 1 HP through healing | +1 aggro to the healer |
+| Receive healing | 0 aggro from that healing |
+
+**Healing aggro belongs entirely to the healer.** The player receiving the healing does not gain aggro from the restored HP.
+
+Damage and healing are cumulative during the fight; they are not limited to the current turn.
+
+## 3. Creature-size modifier
+
+Creature size modifies a player's aggro only when the enemy making the target decision has low Intelligence.
+
+| Player character's size | Modifier |
 |---|---:|
 | Tiny | -10 |
 | Small | -5 |
@@ -29,49 +60,50 @@ Creature size modifies aggro only against enemies with low Intelligence.
 | Huge | +10 |
 | Gargantuan | +15 |
 
-### Charisma
+Against enemies that do not have low Intelligence, this size modifier does not apply.
 
-- Use the actual Charisma ability score, not the Charisma modifier.
-- Higher Charisma lowers aggro.
-- A Charisma score of 10 is the neutral reference point.
+## 4. Stealth
 
-**Formula discussed — proposal only, not a confirmed final rule:**
+- Stealth reduces a player's aggro while that player remains unseen.
+- The Stealth reduction can stack with the Charisma effect.
+- Physical contact cancels the Stealth-based aggro reduction.
+- If an enemy notices the player, the Stealth-based reduction is cancelled.
 
-Aggro = 100 - 2 × (CHA - 10)
+The exact numerical amount of the Stealth reduction has not been established in the recovered decisions.
 
-Do not treat this formula as finalized.
+## 5. Enemy target selection — weighted spin wheel
 
-### Stealth
+Target selection uses a spin-wheel website with each party member weighted according to their current aggro.
 
-- Stealth can lower aggro.
-- Its effect only applies while the player remains unseen.
-- Physical contact cancels the stealth-based aggro reduction.
-- Stealth and Charisma can stack.
-- Stealth is automatically cancelled if an enemy notices the player.
+`Player's selection probability = (Player's aggro ÷ Total party aggro) × 100%`
 
-### Healing and support
+In other words:
 
-- Healing and support actions can attract enemy attention.
-- A healer who heals or supports allies can become a target.
-- The design intent is for healers to face the risk of attracting aggro.
+1. Determine each party member's current aggro.
+2. Add the party members' aggro values to obtain the total party aggro.
+3. Give each player a share of the wheel proportional to their aggro divided by the total.
+4. Use the weighted spin to select the enemy's target.
 
-## Target-selection design principles
+### What this means in combat
 
-- The system should be manageable for both players and the DM.
-- Avoid mechanics that require excessive tracking.
-- Small changes in aggro should not automatically change the enemy's target.
+- More aggro means a higher probability of being selected.
+- The highest-aggro player is not automatically selected every time.
+- A player who deals the most damage will generally build substantial aggro.
+- A healer can overtake that player if the healer's accumulated healing aggro is greater.
+- A change in aggro changes the selection probability; it does not automatically force the enemy to change targets.
 
-## Unfinished details
+## 6. Remaining implementation details
 
-Do not invent these values or procedures:
-- Final Charisma formula.
-- Exact numerical Stealth reduction.
-- Exact aggro changes from healing and support.
-- Complete target-selection procedure.
-- Other aggro modifiers and interactions.
+These are the details not established in the recovered discussion. They should not be filled in without the project owner's decision:
 
-Continue from the recorded mechanics and ask the user when a missing detail becomes necessary.
+- The exact numerical amount by which Stealth reduces aggro.
+- Exactly when or how often the weighted spin wheel is used to select or reselect a target.
+- Whether non-healing support actions generate aggro, and if so, how much.
+- Any additional modifiers or special-case interactions.
+- How accumulated values are handled between separate fights.
+
+The core damage, healing, Charisma, size-modifier, and weighted target-selection rules above are established and should not be marked as undecided.
 
 ## Development boundary
 
-This page records the current concept and mechanics from the project handover. It does not mean every part of the Aggro System is complete, and it does not move the current development focus away from Weapon Mastery.
+Aggro System is priority 1 on the ideas list, but Weapon Mastery remains the current development focus. These are separate systems; no interaction between them is assumed unless the project owner approves it.

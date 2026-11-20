@@ -30,3 +30,12 @@ All notable additions and approved mechanical changes to THE EMPEROR'S DND SYSTE
 
 ### Not assigned
 - No numerical accuracy bonus, base damage, range, Aggro formula, Stealth reduction, or healing/support aggro values were invented.
+
+### Aggro System correction — recovered prior decisions
+- Corrected the Aggro calculation to the previously approved formula: 100 - 2 × (CHA - 10) + applicable size modifier + accumulated damage + accumulated healing.
+- Recorded 1 damage dealt = 1 aggro for the attacker.
+- Recorded 1 HP restored = 1 aggro for the healer; the healing recipient receives 0 aggro from that healing.
+- Clarified that damage and healing aggro accumulate throughout the entire fight.
+- Confirmed the weighted spin-wheel target-selection method: each player's probability is their aggro divided by total party aggro.
+- Retained the low-Intelligence restriction on creature-size modifiers and the established Stealth interactions.
+- Left only genuinely unspecified implementation details marked as open.

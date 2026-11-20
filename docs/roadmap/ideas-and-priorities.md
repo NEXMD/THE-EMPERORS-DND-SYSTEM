@@ -1,12 +1,12 @@
 # Ideas & Development Priority List
 
-This is an ideas and planning list. Items in this list are not automatically confirmed mechanics or completed systems.
+This is an ideas and planning list. Items in this list are not automatically completed systems.
 
 **Current development focus:** Weapon Mastery.
 
 | Priority | System | Reason |
 |---:|---|---|
-| 1 | Aggro System | To be defined. |
+| 1 | Aggro System | Determines which enemies prioritize which players. |
 | 2 | Weapon Mastery | Adds tactical depth to every combat encounter. |
 | 3 | Mana System | Fundamentally changes spellcasting. |
 | 4 | Boss Adaptation | Makes major fights memorable. |
@@ -17,6 +17,6 @@ This is an ideas and planning list. Items in this list are not automatically con
 
 ## Development note
 
-Weapon Mastery remains the system currently being worked on. Aggro System is listed at priority 1 in the ideas list; this does not change the current development focus.
+Weapon Mastery remains the system currently being worked on. Aggro System is priority 1 on the ideas list, but its design is incomplete and this priority does not change the current Weapon Mastery focus.
 
 This list should be revised only when the project owner changes the priorities or approves additional details.

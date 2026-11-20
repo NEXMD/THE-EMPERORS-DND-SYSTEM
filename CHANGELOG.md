@@ -27,3 +27,5 @@ All notable additions and approved mechanical changes to THE EMPEROR'S DND SYSTE
 ### Existing Weapon Mastery records retained
 - Light Hammer weapon profile and its selected Rapid Impact skill remain unchanged.
 - Weapon Mastery remains the current development focus.
+
+- Preserved the original 1.0-draft structured Aggro source as an unchanged JSON archive under Aggro System/Archive.

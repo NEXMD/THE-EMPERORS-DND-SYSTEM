@@ -1,0 +1,377 @@
+
+{
+  "system_name": "Custom D&D Aggro System",
+  "version": "1.0-draft",
+  "status": "Under development",
+  "purpose": "Create a dynamic enemy-targeting system that considers player threat, physical presence, support actions, survival and enemy intelligence.",
+
+  "core_principles": [
+    "Every player begins with 100 base aggro.",
+    "Aggro determines how much attention a player attracts from enemies.",
+    "Damage and healing generate aggro.",
+    "Different enemy intelligence levels influence targeting behaviour.",
+    "Enemy personalities and instincts may influence target selection.",
+    "The system should remain easy for the DM to manage.",
+    "Do not introduce unnecessary bookkeeping or complexity.",
+    "Unresolved mechanics must remain unresolved until the DM decides."
+  ],
+
+  "base_aggro": {
+    "value": 100,
+    "applies_to": "Every player"
+  },
+
+  "size_based_aggro": {
+    "status": "Established",
+    "condition": "Only applies against Low-INT enemies.",
+    "modifiers": {
+      "Tiny": -10,
+      "Small": -5,
+      "Medium": 0,
+      "Large": 5,
+      "Huge": 10,
+      "Gargantuan": 15
+    },
+    "rules": [
+      "Every size category changes aggro by 5.",
+      "Medium size is neutral.",
+      "Average-INT and High-INT enemies ignore size-based aggro adjustments."
+    ]
+  },
+
+  "charisma_based_aggro": {
+    "status": "Established",
+    "type": "Passive",
+    "ability_used": "Actual CHA ability score, not CHA modifier.",
+    "neutral_score": 10,
+    "formula": "100 - 2 * (CHA_score - 10)",
+    "rules": [
+      "Every CHA point above 10 reduces aggro by 2.",
+      "Every CHA point below 10 increases aggro by 2.",
+      "CHA 10 produces 100 baseline aggro.",
+      "Higher CHA reduces aggro.",
+      "Lower CHA increases aggro.",
+      "CHA reduction can stack with Stealth reduction."
+    ],
+    "examples": {
+      "CHA_6": 108,
+      "CHA_8": 104,
+      "CHA_10": 100,
+      "CHA_12": 96,
+      "CHA_14": 92,
+      "CHA_16": 88,
+      "CHA_18": 84,
+      "CHA_20": 80
+    },
+    "unresolved": [
+      "No minimum aggro multiplier or lower cap has been finalized."
+    ]
+  },
+
+  "stealth_based_aggro": {
+    "status": "Established",
+    "type": "Conditional",
+    "ability_used": "Stealth skill modifier, not DEX score.",
+    "reduction_per_2_modifier_points": 2,
+    "maximum_listed_modifier": 20,
+    "table": {
+      "0_to_1": 0,
+      "2_to_3": 2,
+      "4_to_5": 4,
+      "6_to_7": 6,
+      "8_to_9": 8,
+      "10_to_11": 10,
+      "12_to_13": 12,
+      "14_to_15": 14,
+      "16_to_17": 16,
+      "18_to_19": 18,
+      "20": 20
+    },
+    "conditions": [
+      "The player must remain unseen by the enemy.",
+      "The player must not physically interact with or touch the enemy in a way that reveals their presence.",
+      "If the enemy notices the player, Stealth-based aggro reduction is cancelled.",
+      "Attacking, healing or providing support may reveal the player depending on the situation."
+    ],
+    "stacking": {
+      "with_charisma": true,
+      "rules": [
+        "CHA and Stealth reductions can stack.",
+        "Stealth is conditional and may be cancelled when the enemy notices the player."
+      ]
+    }
+  },
+
+  "damage_based_aggro": {
+    "status": "Established",
+    "applies_to": "All enemy types",
+    "generation": {
+      "normal_character": {
+        "damage_to_aggro_ratio": "1:1",
+        "formula": "Damage dealt * 1"
+      },
+      "tank": {
+        "damage_to_aggro_ratio": "1:2",
+        "formula": "Damage dealt * 2"
+      }
+    },
+    "rules": [
+      "Normal characters generate 1 aggro per 1 damage.",
+      "Tanks generate 2 aggro per 1 damage.",
+      "The tank multiplier compensates for typically lower damage output and helps tanks maintain enemy attention."
+    ]
+  },
+
+  "healing_based_aggro": {
+    "status": "Partially established",
+    "applies_to": "All enemy types",
+    "rules": [
+      "Healing generates aggro.",
+      "Only effective HP restored generates aggro.",
+      "Overhealing does not generate aggro.",
+      "Healing-generated aggro belongs to the healer, not the healed player.",
+      "A healer can become the highest-aggro target if their generated healing aggro surpasses other players' aggro."
+    ],
+    "unresolved": [
+      "The exact healing-to-aggro conversion ratio has not been decided."
+    ]
+  },
+
+  "intelligent_enemy_support_detection": {
+    "status": "Established, DM-dependent",
+    "enemy_types": [
+      "Intelligent humanoids",
+      "Demons",
+      "Hunters",
+      "Elves",
+      "Humanoid tacticians",
+      "Other enemies capable of tactical reasoning"
+    ],
+    "trigger": "An intelligent enemy identifies a player operating in a rear-guard support role.",
+    "procedure": [
+      "The identified player makes a CHA check.",
+      "On success, the player receives no additional aggro from this check.",
+      "On failure, the player gains a small amount of additional aggro."
+    ],
+    "dm_controlled": [
+      "The DM determines the check DC.",
+      "The DM determines the additional aggro gained.",
+      "Both values depend on the situation and enemy."
+    ]
+  },
+
+  "hp_loss_aggro": {
+    "status": "Established",
+    "applies_to": "All enemy types",
+    "formula": "floor(HP_lost / 5)",
+    "generation": "Every 5 HP lost generates 1 aggro.",
+    "examples": {
+      "5_HP": 1,
+      "10_HP": 2,
+      "20_HP": 4,
+      "37_HP": 7,
+      "50_HP": 10,
+      "100_HP": 20
+    },
+    "rules": [
+      "Losing HP generates additional aggro.",
+      "Intentionally taking damage to generate aggro is allowed under the current design.",
+      "The DM considers this acceptable because deliberately taking damage endangers the player."
+    ]
+  },
+
+  "aggro_decay": {
+    "status": "Established",
+    "amount": 5,
+    "frequency": "Per player turn",
+    "formula": "Current accumulated aggro - 5",
+    "rules": [
+      "Every player turn without attacking or healing reduces accumulated aggro by 5.",
+      "Attacking prevents aggro decay for that turn.",
+      "Healing prevents aggro decay for that turn.",
+      "Movement does not prevent decay.",
+      "Defensive actions do not prevent decay.",
+      "Utility actions do not prevent decay.",
+      "Defensive or utility actions only prevent decay if they also involve attacking or healing.",
+      "Aggro cannot fall below 0.",
+      "Decay applies to all accumulated aggro, not just base aggro."
+    ],
+    "affected_aggro": [
+      "Base aggro",
+      "Damage-generated aggro",
+      "Healing-generated aggro",
+      "HP-loss aggro",
+      "Taunt-generated aggro",
+      "Other accumulated aggro factors"
+    ],
+    "design_decision": "Small attacks can reset decay. This is an intentional tactical trade-off because attacking can endanger teammates."
+  },
+
+  "unconscious_players": {
+    "status": "Partially established",
+    "rules": [
+      "Players at 0 HP retain their accumulated aggro.",
+      "Unconscious players cannot generate additional aggro."
+    ],
+    "unresolved": [
+      "Whether retained aggro becomes active again immediately upon revival has not been explicitly finalized."
+    ]
+  },
+
+  "damage_over_time": {
+    "status": "Established",
+    "generates_aggro": false,
+    "examples": [
+      "Poison damage",
+      "Burning damage",
+      "Other ongoing damage-over-time effects"
+    ]
+  },
+
+  "aggro_ties": {
+    "status": "Established",
+    "resolution": "The DM decides which player the enemy targets when multiple players have equal aggro."
+  },
+
+  "enemy_targeting_instincts": {
+    "status": "Approved concept, implementation unresolved",
+    "description": "Different enemy species and creatures may have different instincts, personalities and combat priorities that influence their target selection.",
+    "examples": {
+      "Wolves": [
+        "Wounded targets",
+        "Isolated targets"
+      ],
+      "Goblins": [
+        "Vulnerable-looking targets"
+      ],
+      "Spiders": [
+        "Restrained targets",
+        "Trapped targets"
+      ],
+      "Dragons": [
+        "Greatest perceived threat"
+      ],
+      "Assassins_and_Hunters": [
+        "Rear-guard support",
+        "Strategically important targets"
+      ],
+      "Undead": [
+        "Closest living target"
+      ],
+      "Predatory_Beasts": [
+        "Weakest-looking targets"
+      ],
+      "Demons": [
+        "Magical threats",
+        "Strategically important targets"
+      ]
+    },
+    "rules": [
+      "These are behavioural tendencies, not mandatory rules.",
+      "Enemy instincts may influence targeting beyond numerical aggro.",
+      "Different species should not necessarily target the same way.",
+      "The DM should retain control over enemy behaviour."
+    ],
+    "design_restrictions": [
+      "Do not create a separate aggro table for every enemy species.",
+      "Avoid excessive bookkeeping.",
+      "The method of combining shared aggro values with different enemy instincts remains undecided."
+    ]
+  },
+
+  "enemy_intelligence": {
+    "categories": {
+      "Low_INT": {
+        "size_modifier": true,
+        "behaviour": "More influenced by physical presence and instinctive targeting."
+      },
+      "Average_INT": {
+        "size_modifier": false,
+        "behaviour": "Uses the general aggro system without size-based adjustments."
+      },
+      "High_INT": {
+        "size_modifier": false,
+        "behaviour": "Can identify rear-guard support and use tactical targeting behaviour."
+      }
+    },
+    "notes": [
+      "Numerical INT thresholds for these categories have not been established.",
+      "The DM may design intelligent enemies with special targeting behaviour."
+    ]
+  },
+
+  "taunts_and_aggro_manipulation": {
+    "status": "Not finalized",
+    "rules": [
+      "Taunts and special aggro manipulation may exist.",
+      "Their effectiveness depends on enemy intelligence, species and design.",
+      "The DM may control whether an enemy responds to a taunt.",
+      "There is no finalized universal taunt mechanic."
+    ]
+  },
+
+  "rejected_mechanics": {
+    "proximity_based_aggro": {
+      "status": "Rejected",
+      "reason": "Tracking aggro adjustments every time a player moves would waste DM time."
+    },
+    "individual_enemy_aggro_tables": {
+      "status": "Rejected",
+      "reason": "Maintaining separate aggro tables for every enemy would be unnecessarily complicated."
+    }
+  },
+
+  "unresolved_mechanics": [
+    {
+      "topic": "Healing conversion ratio",
+      "detail": "How much aggro is generated per effective HP restored?"
+    },
+    {
+      "topic": "AoE damage",
+      "detail": "Should aggro be calculated separately for each enemy based on damage received, or once using total damage dealt?"
+    },
+    {
+      "topic": "Enemy instincts",
+      "detail": "How should different enemy personalities influence target selection while retaining a shared aggro system?"
+    },
+    {
+      "topic": "Unified aggro calculation",
+      "detail": "The exact mathematical sequence for combining base aggro, passive adjustments and generated aggro has not been formally finalized."
+    },
+    {
+      "topic": "Unconscious player revival",
+      "detail": "Should retained aggro become active again immediately when a player is revived?"
+    },
+    {
+      "topic": "Aggro caps",
+      "detail": "No universal minimum or maximum aggro cap has been finalized."
+    },
+    {
+      "topic": "Enemy intelligence thresholds",
+      "detail": "Numerical INT thresholds for Low-INT, Average-INT and High-INT enemies have not been established."
+    }
+  ],
+
+  "design_preferences": {
+    "complexity": "Keep the system manageable for a DM.",
+    "development_style": "Develop mechanics step by step with the DM making final decisions.",
+    "avoid": [
+      "Unnecessary complexity",
+      "Excessive bookkeeping",
+      "Unapproved mechanics",
+      "Automatically finalizing unresolved ideas",
+      "Separate aggro tables for every enemy"
+    ],
+    "priority": "Gameplay balance, tactical decision-making and ease of use."
+  },
+
+  "instructions_for_future_development": [
+    "Treat all established mechanics as existing rules.",
+    "Do not silently change numerical values or formulas.",
+    "Do not treat unresolved mechanics as finalized.",
+    "Ask for the DM's approval before introducing or changing a mechanic.",
+    "When identifying loopholes, distinguish intentional tactical trade-offs from genuine exploits.",
+    "Preserve the existing design philosophy.",
+    "The DM has currently decided not to add more mechanics until further testing."
+  ]
+}

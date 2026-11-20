@@ -477,3 +477,8 @@ These are unresolved procedures, not permission to change established mechanics.
 ## Project priority
 
 Aggro System is priority 1 on the Ideas & Development List. Weapon Mastery remains the current development focus. The two systems remain separate unless an interaction is explicitly approved.
+
+
+## Historical source archive
+
+The original structured draft is preserved unchanged at [Archive/Original Aggro System Draft 1.0-draft.json](Archive/Original%20Aggro%20System%20Draft%201.0-draft.json). It is a historical snapshot; this canonical document records the later approved decisions and supersedes earlier unresolved labels where the user made subsequent decisions.

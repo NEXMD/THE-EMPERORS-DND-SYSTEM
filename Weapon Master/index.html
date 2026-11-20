@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Weapon Mastery: the weapon catalogue, passive concepts, active skills, and development roadmap.">
+  <title>Weapon Mastery | The Emperor's DND System</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../index.html"><span class="wordmark-mark">✦</span> THE EMPEROR'S <span>DND SYSTEM</span></a>
+    <nav aria-label="Main navigation">
+      <a href="../index.html">Codex</a>
+      <a class="active" href="index.html">Weapon Mastery</a>
+      <a href="../systems/aggro-system.html">Aggro</a>
+      <a href="https://github.com/NEXMD/THE-EMPERORS-DND-SYSTEM">Repository ↗</a>
+    </nav>
+  </header>
+  <main>
+    <section class="page-title">
+      <p class="breadcrumb"><a href="../index.html">CODEX</a> / SYSTEMS / WEAPON MASTERY</p>
+      <p class="eyebrow">SYSTEM 01 · CURRENT DEVELOPMENT FOCUS</p>
+      <h1>WEAPON MASTERY</h1>
+      <p class="subtitle">ONE WEAPON. ONE IDENTITY. A DIFFERENT WAY TO FIGHT.</p>
+      <p class="page-intro">Every weapon has its own passive ability and active skill. The goal is to make weapon choice a meaningful tactical decision rather than a simple choice of damage dice.</p>
+    </section>
+
+    <section class="section-block">
+      <div class="section-heading">
+        <div><p class="eyebrow">SYSTEM FOUNDATION</p><h2>Core Rules</h2></div>
+        <p class="section-note">The currently recorded foundations of Weapon Mastery.</p>
+      </div>
+      <div class="system-grid">
+        <article class="system-card"><span>RULE 01</span><h3>Unique weapon identity</h3><p>Every weapon has its own passive ability, active skill, and combat identity.</p><small>CORE CONCEPT</small></article>
+        <article class="system-card"><span>RULE 02</span><h3>Active skills cost an Action</h3><p>Every active weapon skill consumes an Action.</p><small>UNIVERSAL RULE</small></article>
+        <article class="system-card"><span>RULE 03</span><h3>Hybrid damage foundation</h3><p>Standard D&amp;D 5e (2014) damage dice are the foundation. Weapon-specific changes may be considered later.</p><small>OPTION C SELECTED</small></article>
+      </div>
+    </section>
+
+    <section class="section-block">
+      <div class="section-heading">
+        <div><p class="eyebrow">01 / ARMAMENTS</p><h2>Weapon Catalogue</h2></div>
+        <p class="section-note">37 weapons and their selected passive ability concepts. Detailed mechanics are still subject to refinement.</p>
+      </div>
+      <div class="table-wrap">
+        <h3 class="table-heading">Simple Ranged</h3>
+        <table class="data-table"><thead><tr><th>Weapon</th><th>Passive</th><th>Concept</th></tr></thead><tbody>
+          <tr><td>Light Crossbow</td><td>Steady Aim</td><td>If the wielder does not move during their turn, their next attack gains an accuracy bonus.</td></tr>
+          <tr><td>Dart</td><td>Rapid Throw</td><td>After hitting with a dart, the next dart attack against the same enemy gains an accuracy bonus.</td></tr>
+          <tr><td>Shortbow</td><td>Unnamed</td><td>Gain an accuracy bonus when attacking an enemy the wielder has not attacked before.</td></tr>
+          <tr><td>Sling</td><td>Concussive Impact</td><td>Critical hits can briefly disorient the target.</td></tr>
+        </tbody></table>
+
+        <h3 class="table-heading">Simple Melee</h3>
+        <table class="data-table"><thead><tr><th>Weapon</th><th>Passive</th><th>Concept</th></tr></thead><tbody>
+          <tr><td>Club</td><td>Blunt Force</td><td>Attacks have a chance to briefly reduce the target's movement speed.</td></tr>
+          <tr><td>Dagger</td><td>Backstabber</td><td>Gain an accuracy bonus when attacking an enemy unaware of the wielder's presence.</td></tr>
+          <tr><td>Greatclub</td><td>Overwhelming Force</td><td>Gain a damage bonus against targets smaller than the wielder.</td></tr>
+          <tr><td>Handaxe</td><td>Cleave</td><td>After killing an enemy, the next melee attack gains an attack bonus.</td></tr>
+          <tr><td>Javelin</td><td>Piercing Momentum</td><td>Gain a damage bonus when throwing from at least 20 feet away.</td></tr>
+          <tr><td>Light Hammer</td><td>Quick Impact</td><td>Gain an accuracy bonus on the first attack against an enemy each turn.</td></tr>
+          <tr><td>Mace</td><td>Unyielding Strike</td><td>Attacks cannot have their damage reduced by ordinary physical armor.</td></tr>
+          <tr><td>Quarterstaff</td><td>Counterbalance</td><td>Gain an accuracy bonus on attacks made immediately after successfully avoiding an attack.</td></tr>
+          <tr><td>Sickle</td><td>Blood Scent</td><td>Gain a damage bonus against enemies already suffering from bleeding.</td></tr>
+          <tr><td>Spear</td><td>Keep Your Distance</td><td>Gain an accuracy bonus against enemies that moved at least 10 feet toward the wielder during the turn.</td></tr>
+        </tbody></table>
+
+        <h3 class="table-heading">Martial Melee</h3>
+        <table class="data-table"><thead><tr><th>Weapon</th><th>Passive</th><th>Concept</th></tr></thead><tbody>
+          <tr><td>Battleaxe</td><td>Executioner's Instinct</td><td>Gain an accuracy bonus against enemies below 50% HP.</td></tr>
+          <tr><td>Flail</td><td>Unpredictable Swings</td><td>All attacks made with the flail gain an accuracy bonus.</td></tr>
+          <tr><td>Glaive</td><td>Zone Controller</td><td>Enemies entering the wielder's reach suffer a movement penalty.</td></tr>
+          <tr><td>Greataxe</td><td>Berserker's Momentum</td><td>Gain increased damage while below 50% HP.</td></tr>
+          <tr><td>Greatsword</td><td>Stable Form</td><td>Gain an accuracy bonus if the wielder has not taken damage during the current round.</td></tr>
+          <tr><td>Halberd</td><td>Versatile Edge</td><td>Gain different bonuses depending on whether the blade or point is used.</td></tr>
+          <tr><td>Lance</td><td>Mounted Dominance</td><td>Gain an accuracy bonus while mounted.</td></tr>
+          <tr><td>Longsword</td><td>Adaptive Technique</td><td>Gain a bonus when switching between one-handed and two-handed grips.</td></tr>
+          <tr><td>Maul</td><td>Armor Demolisher</td><td>Deal additional damage against heavily armored enemies.</td></tr>
+          <tr><td>Morningstar</td><td>Punishing Strikes</td><td>Gain a damage bonus after successfully blocking an attack.</td></tr>
+          <tr><td>Pike</td><td>Anti-Charge</td><td>Deal additional damage against enemies that move toward the wielder before attacking.</td></tr>
+          <tr><td>Rapier</td><td>Duelist's Grace</td><td>Gain an accuracy bonus when fighting only one enemy within the wielder's reach.</td></tr>
+          <tr><td>Scimitar</td><td>Flowing Motion</td><td>Gain increased movement speed after landing an attack.</td></tr>
+          <tr><td>Shortsword</td><td>Defensive Counter</td><td>Gain an accuracy bonus and attack bonus when wielding a shield in the other hand.</td></tr>
+          <tr><td>Trident</td><td>Pinning Strike</td><td>Critical hits can briefly restrict enemy movement.</td></tr>
+          <tr><td>War Pick</td><td>Weak Point</td><td>Gain additional damage against enemies with high AC.</td></tr>
+          <tr><td>Warhammer</td><td>Guard Breaker</td><td>Gain a damage bonus against enemies using defensive stances.</td></tr>
+          <tr><td>Whip</td><td>Disarming Lash</td><td>Critical hits can force enemies to drop a held item.</td></tr>
+        </tbody></table>
+
+        <h3 class="table-heading">Martial Ranged</h3>
+        <table class="data-table"><thead><tr><th>Weapon</th><th>Passive</th><th>Concept</th></tr></thead><tbody>
+          <tr><td>Blowgun</td><td>Silent Killer / Hidden Assassin</td><td>Attacking does not immediately reveal the wielder's position; gain an accuracy bonus against enemies that have not detected the wielder.</td></tr>
+          <tr><td>Hand Crossbow</td><td>Quick Reload</td><td>Reloading requires less effort.</td></tr>
+          <tr><td>Heavy Crossbow</td><td>Reinforced Draw</td><td>Gain additional damage against enemies larger than the wielder.</td></tr>
+          <tr><td>Longbow</td><td>Patient Hunter</td><td>If the wielder does not move during their turn, their next attack gains additional damage.</td></tr>
+          <tr><td>Net</td><td>Opportunistic Capture</td><td>Gain an accuracy bonus when throwing at enemies engaged in combat with allies.</td></tr>
+        </tbody></table>
+      </div>
+      <p class="notice">These are selected passive concepts. Their exact mechanics still need development and refinement.</p>
+      <p><a class="text-link" href="Weapon%20Catalogue.md">Open full catalogue documentation ↗</a></p>
+    </section>
+
+    <section class="section-block">
+      <div class="section-heading">
+        <div><p class="eyebrow">02 / ACTIVE TECHNIQUES</p><h2>Active Skill Development</h2></div>
+        <p class="section-note">Nine skills were recorded in the handover document. Rapid Impact was selected for Light Hammer afterward.</p>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table"><thead><tr><th>Weapon</th><th>Active skill</th><th>Recorded direction</th></tr></thead><tbody>
+          <tr><td>Light Crossbow</td><td>Crippling Shot</td><td>Precision shot with a 1d4 body-part outcome.</td></tr>
+          <tr><td>Dart</td><td>Distracting Throw</td><td>Distracts an unseen target; wielder and allies gain Advantage on their next attack against it.</td></tr>
+          <tr><td>Shortbow</td><td>Rain of Arrows</td><td>Three arrows per selected enemy; each arrow has Advantage.</td></tr>
+          <tr><td>Sling</td><td>Cranium Crusher</td><td>Head-directed shot; bonus damage and disorientation on a hit.</td></tr>
+          <tr><td>Club</td><td>Skull Splitter</td><td>Overhead head strike; bonus damage and disorientation on a hit.</td></tr>
+          <tr><td>Dagger</td><td>Prep Time</td><td>Coats the dagger with available poisons; coating and inflicted effects have separate durations.</td></tr>
+          <tr><td>Greatclub</td><td>Overhead Demolition</td><td>Block Breaker attack; defensive interactions remain partly unresolved.</td></tr>
+          <tr><td>Handaxe</td><td>Finishing Hatchet</td><td>Targets enemies below 10% HP; a miss stuns the wielder for 1 round.</td></tr>
+          <tr><td>Javelin</td><td>Piercing Launch</td><td>Straight-line attack; shield penetration depends on the D20 result.</td></tr>
+          <tr><td>Light Hammer</td><td><a href="../weapons/light-hammer.html">Rapid Impact</a></td><td>Two separate D20 strikes against one target; first strike receives Quick Impact.</td></tr>
+        </tbody></table>
+      </div>
+      <p><a class="text-link" href="Active%20Skills.md">Open active skill documentation ↗</a> · <a class="text-link" href="Weapons/Light%20Hammer.md">Open Light Hammer design record ↗</a></p>
+    </section>
+
+    <section class="section-block">
+      <div class="section-heading">
+        <div><p class="eyebrow">03 / DEVELOPMENT</p><h2>Seven-Stage Roadmap</h2></div>
+        <p class="section-note">Balancing is intentionally delayed until the abilities have been developed.</p>
+      </div>
+      <ol class="roadmap-list">
+        <li class="complete"><span>01</span><div><strong>Weapon catalogue</strong><small>COMPLETED</small></div></li>
+        <li class="complete"><span>02</span><div><strong>Select passive concepts for all weapons</strong><small>COMPLETED</small></div></li>
+        <li><span>03</span><div><strong>Develop and refine passive mechanics</strong><small>PENDING</small></div></li>
+        <li class="current"><span>04</span><div><strong>Design active weapon skills</strong><small>CURRENT STAGE</small></div></li>
+        <li><span>05</span><div><strong>Design mastery progression and unlocking</strong><small>PENDING</small></div></li>
+        <li><span>06</span><div><strong>Overall balancing</strong><small>SECOND-TO-LAST STAGE</small></div></li>
+        <li><span>07</span><div><strong>Final adjustments and integration</strong><small>FINAL STAGE</small></div></li>
+      </ol>
+      <p><a class="text-link" href="Development%20Roadmap.md">Open development roadmap ↗</a></p>
+    </section>
+
+    <section class="archive-note">
+      <p class="eyebrow">DEVELOPMENT RULE</p>
+      <p>Do not invent mechanics or balance values without approval. Keep unfinished concepts open. Weapon Mastery is being developed separately from the Aggro System unless an interaction is explicitly approved.</p>
+    </section>
+  </main>
+  <footer class="site-footer">
+    <span>THE EMPEROR'S DND SYSTEM</span>
+    <span><a href="../index.html">BACK TO CODEX ↑</a></span>
+  </footer>
+</body>
+</html>

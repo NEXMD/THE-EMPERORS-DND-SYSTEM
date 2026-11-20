@@ -23,6 +23,8 @@ These are separate systems. Do not assume that they interact unless the project 
 
 ## Website
 
+[Open the published DND handbook](https://nexmd.github.io/THE-EMPERORS-DND-SYSTEM/).
+
 The website source is in the repository root and the published pages are linked from the homepage. GitHub Pages is configured to publish from the main branch and repository root.
 
 ## Design principles
